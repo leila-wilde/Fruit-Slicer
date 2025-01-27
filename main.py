@@ -7,6 +7,8 @@ from pygame.locals import *
 WIDTH = 1800
 HEIGHT = 1200
 
+def menu():  
+    pass
 
 
 # def menu():  
@@ -46,11 +48,24 @@ HEIGHT = 1200
 # def game_over():
     # deux condition de défaite : la bombe (saisie de clavier)
 #     # display message victory/defeat
+def show_random_object():
+    # select object - fruit, ice cube or bomb
+    # select random x,y vector? speed
+    pass
+    
+def manage_score():
+    pass
+def player_lives():
+    pass
+    
+def game_over():
+    # display message victory/defeat
+    pass
 
 pygame.init()
 
 DISPLAYSURF = pygame.display.set_mode((WIDTH, HEIGHT))
-pygame.display.set_caption('Fruit Slicer!')
+pygame.display.set_caption('Fruit Slicer')
 
 # timer 
 
