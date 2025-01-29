@@ -1,18 +1,57 @@
 import pygame, sys, random 
 from pygame.locals import *
 
+pygame.init()
+
 
 # Constants
 
-WIDTH = 1800
-HEIGHT = 1200
+WIDTH = 900
+HEIGHT = 600
+MID_WIDTH = WIDTH * 0.5
+MID_HEIGHT = HEIGHT * 0.5
 
-def menu():  
-    pass
+RED = (217, 1, 21)   
+TANGERINE = (255, 127, 0)
 
 
-# def menu():  
-    # return les différent objet présent sur le menu
+
+def draw_button(text, x, y, hover=False):
+    """ function to create a button"""
+    font = pygame.font.Font('fonts/DoubleFeature20.ttf', 60)
+    color = RED if hover else TANGERINE
+    text_surface = font.render(text, True, color)
+    text_rect = text_surface.get_rect(center=(x , y))
+    DISPLAYSURF.blit(text_surface, text_rect)
+    return text_rect
+
+
+def menu(): 
+    """ function with loop to display menu and chose options"""
+    # background design
+    background_image = pygame.image.load("assets/massacre_tronconneuse.jpg")
+    background_image = pygame.transform.scale(background_image, (WIDTH, HEIGHT))
+    DISPLAYSURF.blit(background_image, (0, 0)) 
+
+    while True: 
+        mouse_x, mouse_y = pygame.mouse.get_pos()
+        button1_rect = draw_button("JOUER", MID_WIDTH, MID_HEIGHT - 40, button1_rect.collidepoint(mouse_x, mouse_y) if 'button1_rect' in locals()else False)
+        button2_rect = draw_button("SCORES", MID_WIDTH, MID_HEIGHT + 80, button2_rect.collidepoint(mouse_x, mouse_y) if 'button2_rect' in locals()else False)
+
+        for event in pygame.event.get():
+            if event.type == QUIT:
+                pygame.quit()
+                sys.exit()
+
+            if event.type == pygame.MOUSEBUTTONDOWN and button1_rect.collidepoint(mouse_x, mouse_y):
+                # add code
+
+            if event.type == pygame.MOUSEBUTTONDOWN and button2_rect.collidepoint(mouse_x, mouse_y):
+                # add code
+
+        pygame.display.update()
+
+
 
 # def show_random_object():
     # créé un ojet fruit avec une image, une lettre, une taille (variable : image, letter, size(width, height))
@@ -62,7 +101,7 @@ def game_over():
     # display message victory/defeat
     pass
 
-pygame.init()
+
 
 DISPLAYSURF = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption('Fruit Slicer')
