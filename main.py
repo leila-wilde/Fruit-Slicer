@@ -33,6 +33,14 @@ def menu():
     background_image = pygame.transform.scale(background_image, (WIDTH, HEIGHT))
     DISPLAYSURF.blit(background_image, (0, 0)) 
 
+    # diplay tittle
+    text = "FRUIT SLICER"
+    font_text = pygame.font.Font('fonts/DoubleFeature20.ttf', 100)
+    text_surf = font_text.render(text, True, RED)
+    text_rect = text_surf.get_rect(center=(MID_WIDTH, 100))
+    DISPLAYSURF.blit(text_surf, text_rect)
+
+
     while True: 
         mouse_x, mouse_y = pygame.mouse.get_pos()
         button1_rect = draw_button("JOUER", MID_WIDTH, MID_HEIGHT - 40, button1_rect.collidepoint(mouse_x, mouse_y) if 'button1_rect' in locals()else False)
@@ -45,9 +53,11 @@ def menu():
 
             if event.type == pygame.MOUSEBUTTONDOWN and button1_rect.collidepoint(mouse_x, mouse_y):
                 # add code
+                pass
 
             if event.type == pygame.MOUSEBUTTONDOWN and button2_rect.collidepoint(mouse_x, mouse_y):
                 # add code
+                pass
 
         pygame.display.update()
 
@@ -115,6 +125,8 @@ while True: # main game loop
         if event.type == QUIT:
             pygame.quit()
             sys.exit()
+
+        menu()
         
     pygame.display.update()
 
