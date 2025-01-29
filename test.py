@@ -32,6 +32,8 @@ letter = font.render(fruit[0].upper(), True, (255, 255, 255))
 image_surface.blit(letter, (10, 60))
 DISPLAYSURF.blit(image_surface, (100, 100))
 
+rect_fruit = image_surface.get_rect()
+
 
     # def random_movement():
     #     # construction du rectangle pour le mouvement : 
