@@ -19,20 +19,23 @@ pygame.display.set_caption('Fruit Slicer!')
 
 
 
+def random_image():
+    # on choisit 1 element au hasard
+    fruits = ["abricot", "ananas", "chamallow", "citron", "courge", "fraise", "glaçon", "grenade", "kiwi", "melon",
+            "noix-coco", "noix-kungfu", "orange", "pamplemousse", "passion", "pasteque", "poire", "pomme-pelee", "pomme"]
+    element = choice(fruits)
+    # Surface pour l'image :
+    image_surface =pygame.image.load("assets/"+element+".png").convert_alpha() 
+    image_surface = pygame.transform.scale(image_surface, (85, 85))
+    font = pygame.font.Font(None, 40) # attention changer la font !!!
+    letter = random.choice("ABCDEFGHIJKLMNOPQRSTUVWXYZ")
+    letter_render = font.render(letter, True, (255, 255, 255))
+    image_surface.blit(letter_render, (10, 60))
+    DISPLAYSURF.blit(image_surface, (100, 100))
 
-# on choisit 1 fruit au hasard
-fruits = ["abricot", "ananas", "chamallow", "citron", "courge", "fraise", "glaçon", "grenade", "kiwi", "melon",
-          "noix-coco", "noix-kungfu", "orange", "pamplemousse", "passion", "pasteque", "poire", "pomme-pelee", "pomme"]
-fruit = choice(fruits)
-# Surface pour l'image :
-image_surface =pygame.image.load("assets/"+fruit+".png").convert_alpha() 
-image_surface = pygame.transform.scale(image_surface, (85, 85))
-font = pygame.font.Font(None, 40) # attention changer la font !!!
-letter = font.render(fruit[0].upper(), True, (255, 255, 255))
-image_surface.blit(letter, (10, 60))
-DISPLAYSURF.blit(image_surface, (100, 100))
+    rect_fruit = image_surface.get_rect()
 
-rect_fruit = image_surface.get_rect()
+    return element, letter, rect_fruit
 
 
     # def random_movement():
@@ -66,5 +69,7 @@ while True: # main game loop
         if event.type == QUIT:
             pygame.quit()
             sys.exit()
+
+
     
     pygame.display.update()
