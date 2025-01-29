@@ -7,7 +7,13 @@ from pygame.locals import *
 WIDTH = 1800
 HEIGHT = 1200
 
-
+class Fruit(pygame.sprite.Sprite):
+    """déplace un fruit a travers l'écran. Le fruit se transforme en 
+    flaque de sang quand il est validé par une saisie clavier."""
+    def __init__(self):
+        pygame.sprite.Sprite.__init__(self) # appel du constructeur sprite
+        self.image = pygame.image.load('abricot.png')
+        
 
 # def menu():  
     # return les différent objet présent sur le menu
