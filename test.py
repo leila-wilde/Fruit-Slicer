@@ -31,27 +31,18 @@ def random_image():
     # Surface pour l'image :
     image_surface =pygame.image.load("assets/"+element+".png").convert_alpha() 
     image_surface = pygame.transform.scale(image_surface, (85, 85))
-    font = pygame.font.Font(None, 40) # attention changer la font !!!
+    font = pygame.font.Font(None, 40) 
     letter = random.choice("ABCDEFGHIJKLMNOPQRSTUVWXYZ")
     letter_render = font.render(letter, True, (255, 255, 255))
     image_surface.blit(letter_render, (10, 60))
-    DISPLAYSURF.blit(image_surface, (100, 100))
 
     rect_target = image_surface.get_rect()
 
-    target_list.append(letter, element)
+    target_list.append((letter, element))
 
     return target_list, rect_target
 
 
-    # def random_movement():
-    #     # construction du rectangle pour le mouvement : 
-    #     rect_fruit = image_surface.get_rect()
-    #     coordonnées d'entrée
-    #     x est choisit au hasard dans un interval (-100, 1000)
-    #     y esst choisit au hasard dans un interval (-100, 700)
-
-    #     direction (pixel_x, pixel_y)
 
 
 
@@ -59,10 +50,6 @@ def random_image():
 
 
 
-
-    # def freeze_time():
-
-    # def bomb():
 
     
 
