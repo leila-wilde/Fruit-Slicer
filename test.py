@@ -20,7 +20,11 @@ pygame.display.set_caption('Fruit Slicer!')
 
 
 def random_image():
-    # on choisit 1 element au hasard
+    """ fonction that built an objet rectangle from a random element (for a random image)
+    and a random letter.
+    letter and element are added in a dictionnary 
+    return the rectangle object and the dictionnary"""
+    target_element = {}
     fruits = ["abricot", "ananas", "chamallow", "citron", "courge", "fraise", "glaçon", "grenade", "kiwi", "melon",
             "noix-coco", "noix-kungfu", "orange", "pamplemousse", "passion", "pasteque", "poire", "pomme-pelee", "pomme"]
     element = choice(fruits)
@@ -35,7 +39,9 @@ def random_image():
 
     rect_fruit = image_surface.get_rect()
 
-    return element, letter, rect_fruit
+    target_element[letter] = element
+
+    return target_element, rect_fruit
 
 
     # def random_movement():
