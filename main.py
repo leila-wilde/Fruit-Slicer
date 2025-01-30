@@ -120,16 +120,34 @@ def game_over():
 # background_image_game = pygame.transform.scale(background_image_game, (WIDTH, HEIGHT)) 
 # DISPLAYSURF.blit(background_image_game, (0, 0))
 
-DISPLAYSURF = pygame.display.set_mode((WIDTH, HEIGHT))
-pygame.display.set_caption('Fruit Slicer')
-background_image_game = pygame.image.load("assets/massacre_tronconneuse.jpg")
-background_image_game = pygame.transform.scale(background_image_game, (WIDTH, HEIGHT)) 
 
-DISPLAYSURF.blit(background_image_game, (0, 0))
+def game_over_screen(current_score):
 
-blood_image = pygame.image.load("assets/flaque1.png").convert_alpha()
-blood_image = pygame.transform.scale(blood_image, (300, 300))
-DISPLAYSURF.blit(blood_image, (50, 50))
+    DISPLAYSURF = pygame.display.set_mode((WIDTH, HEIGHT))
+    pygame.display.set_caption('Fruit Slicer')
+    background_image_game = pygame.image.load("assets/massacre_tronconneuse.jpg")
+    background_image_game = pygame.transform.scale(background_image_game, (WIDTH, HEIGHT)) 
+    DISPLAYSURF.blit(background_image_game, (0, 0))
+
+    blood_image = pygame.image.load("assets/flaque1.png").convert_alpha()
+    blood_image = pygame.transform.smoothscale(blood_image, (500, 500))
+    DISPLAYSURF.blit(blood_image, (150, 50))
+
+    game_over_text = "GAME OVER"
+    font_game_over_text = pygame.font.Font('fonts/DoubleFeature20.ttf', 100)
+    game_over_text_surf = font_game_over_text.render(game_over_text, True, RED)
+    game_over_text_rect = game_over_text_surf.get_rect(center=(MID_WIDTH, MID_HEIGHT))
+    DISPLAYSURF.blit(game_over_text_surf, game_over_text_rect)
+
+    score_text = f"ton score est : {current_score} !"
+    font_score_text = pygame.font.Font('fonts/DoubleFeature20.ttf', 40)
+    score_text_surf = font_score_text.render(score_text, True, RED)
+    score_text_rect = score_text_surf.get_rect(center = (MID_WIDTH, 450))
+    DISPLAYSURF.blit(score_text_surf, score_text_rect)
+    # boutton menu
+
+
+
 # current_score = 200
 def display_score(current_score):
     score = f"score : {current_score}"
