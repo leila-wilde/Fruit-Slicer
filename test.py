@@ -24,7 +24,7 @@ def random_image():
     and a random letter.
     letter and element are added in a dictionnary 
     return the rectangle object and the dictionnary"""
-    target_element = {}
+    target_list = []
     fruits = ["abricot", "ananas", "chamallow", "citron", "courge", "fraise", "glaçon", "grenade", "kiwi", "melon",
             "noix-coco", "noix-kungfu", "orange", "pamplemousse", "passion", "pasteque", "poire", "pomme-pelee", "pomme"]
     element = choice(fruits)
@@ -37,11 +37,11 @@ def random_image():
     image_surface.blit(letter_render, (10, 60))
     DISPLAYSURF.blit(image_surface, (100, 100))
 
-    rect_fruit = image_surface.get_rect()
+    rect_target = image_surface.get_rect()
 
-    target_element[letter] = element
+    target_list.append(letter, element)
 
-    return target_element, rect_fruit
+    return target_list, rect_target
 
 
     # def random_movement():
