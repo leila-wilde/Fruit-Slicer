@@ -62,6 +62,8 @@ def menu():
 
 
 
+
+
 # def show_random_object():
     # créé un ojet fruit avec une image, une lettre, une taille (variable : image, letter, size(width, height))
     # cet objet à une coordonée de départ RANDOM, une direction RANDOM et une vitesse (variable : x, y, speed)
@@ -112,13 +114,22 @@ def game_over():
 
 
 
+# DISPLAYSURF = pygame.display.set_mode((WIDTH, HEIGHT))
+# pygame.display.set_caption('Fruit Slicer')
+# background_image_game = pygame.image.load("assets/massacre.jpg")
+# background_image_game = pygame.transform.scale(background_image_game, (WIDTH, HEIGHT)) 
+# DISPLAYSURF.blit(background_image_game, (0, 0))
+
 DISPLAYSURF = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption('Fruit Slicer')
-background_image_game = pygame.image.load("assets/massacre.jpg")
+background_image_game = pygame.image.load("assets/massacre_tronconneuse.jpg")
 background_image_game = pygame.transform.scale(background_image_game, (WIDTH, HEIGHT)) 
+
 DISPLAYSURF.blit(background_image_game, (0, 0))
 
-
+blood_image = pygame.image.load("assets/flaque1.png").convert_alpha()
+blood_image = pygame.transform.scale(blood_image, (300, 300))
+DISPLAYSURF.blit(blood_image, (50, 50))
 # current_score = 200
 def display_score(current_score):
     score = f"score : {current_score}"
