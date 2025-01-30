@@ -10,13 +10,6 @@ HEIGHT = 1200
 MID_WIDTH = WIDTH // 2
 MID_HEIGTH = HEIGHT // 2
 
-class Fruit(pygame.sprite.Sprite):
-    """déplace un fruit a travers l'écran. Le fruit se transforme en 
-    flaque de sang quand il est validé par une saisie clavier."""
-    def __init__(self):
-        pygame.sprite.Sprite.__init__(self) # appel du constructeur sprite
-        self.image = pygame.image.load('abricot.png')
-
 
 def write_score(score):
     with open("./score.json", "w") as file:
@@ -27,43 +20,25 @@ def read_score():
         score = json.load(file)
         return score
 
-# def menu():  
-    # return les différent objet présent sur le menu
+def generate_new_fruit():
 
-# def show_random_object():
-    # créé un ojet fruit avec une image, une lettre, une taille (variable : image, letter, size(width, height))
-    # cet objet à une coordonée de départ RANDOM, une direction RANDOM et une vitesse (variable : x, y, speed)
-#     # select object - fruit, ice cube or bomb
-#     # select random x,y vector? speed
+    # if time is frozen
+    # cannot work for 3 seconds
 
-# def ice_cube():
-    # si la saisie clavier relative au glacon == gèle les mouvements pendant X temps 
-    # 
+    # is called in while True loop
+    # every seconds
 
-# def game_score():
-    # si un fruit est validé 
-    # le score augmente 
-    # le fruit se transforme en flaque de sang 
-    
-# def manage_score():
-    # ajoute le score de la pratie fini à l'ancien score 
-    # varaible : game_score, hystory_score
-    # return le nouveau score
+    # generates randomly a item name
+    # among a array of names
+    # generates randomly a letter
+    # generates randomly a horizontal position
+    # vertical position = top of the screen
+    # return a tuple
+    # (item_name, letter, (x, y))
 
-#def input_new_player()
-    # lie un nom à un score dans un historique 
-    # ajoute un fichier txt ou json
-    
-# def player_lives():
-    # retire une vie à chaque fruit manqué
-    # le joueur débute avec 3 vies
-    # lives = 3
-    # si fruit manqué -> déduit une vie
-    # return le nombre de vie courant
-    
-# def game_over():
-    # deux condition de défaite : la bombe (saisie de clavier)
-#     # display message victory/defeat
+    # finally new fruit is added to the list
+    # alive_items
+    pass
 
 score_players = read_score()
 print("Entrez votre nom :")
@@ -71,76 +46,85 @@ player_name = input()
 
 # si le joueur n'existe pas dans "score.json":
 #    on le créé avec un score égal à zéro
-
+if player_name not in score_players :
+    score_players[player_name] = 0
 
 nb_lives = 3
 
 pygame.init()
 
-PINK = (255, 153, 204)
-DARK_BLUE = (0, 0, 153)
-
 DISPLAYSURF = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption('Fruit Slicer!')
-upper = pygame.Rect(0, 0, WIDTH, MID_HEIGTH)       # left, top, width, height
-lower = pygame.Rect(0, MID_HEIGTH, WIDTH, MID_HEIGTH)       # left, top, width, height
-
-letter = "A"
-
-upper_font = pygame.font.SysFont(None, 72)
-lower_font  = pygame.font.SysFont(None, 72)
-
-upper_img = upper_font.render(letter, True, (0, 0, 0))
-lower_img = lower_font.render("", True, (255, 255, 255))
 
 run = True
 time_zero = time.time()
+minimum = 0
+total_score = 0
+
+# in final game version
+# target_list will be empty
+# we will use a function that creates a new fruit every second
+# the newly created fruit is added to our list alive_items
+alive_items = [("A", "fraise"), ("B", "pomme"), ("C", "glacon"), ("A", "glacon"), ("A", "banane"), ("G", "grenade")]
 
 while run : # main game loop
-    termine = False
-    while not termine :
+    time_now = time.time()
+    difference = time_now - time_zero
+    current_score = 0
+    fail = False
 
-        pygame.draw.rect(DISPLAYSURF, PINK, upper)
-        pygame.draw.rect(DISPLAYSURF, DARK_BLUE, lower)
+    # every seconds :
+    # we call a function that generates a new fruit
+    generate_new_fruit()
 
-        time_now = time.time()
-        difference = time_now - time_zero
-        if difference >= 3 :
-            # Condition of losing one life :
-            # Player loses if he/she doesn't type the rirght letter
-            # within 3 seconds
+    for event in pygame.event.get():
 
-            lower_img = lower_font.render("Perdu", True, (255, 255, 255))
-            time.sleep(3)
-            nb_lives -= 1
-            run = False
-            termine = True
+        if event.type == pygame.KEYDOWN:
+            letter_input = pygame.key.name(event.key).upper()
 
-        for event in pygame.event.get():
+            for i in range(0, len(alive_items)):
+                if letter_input == alive_items[i][0]:
+                    if alive_items[i][1] == "grenade":
+                        game_over(current_score)
 
-            if event.type == pygame.KEYDOWN:
-                lettre_input = pygame.key.name(event.key).upper()
-
-                if lettre_input == letter :
-                    lower_img = lower_font.render("Bravo", True, (255, 255, 255))
-                    termine = True
-                    run = False
-                    if player_name in score_players :
-                        score_players[player_name] += 1
+                        # fail is for scoring
+                        fail = True
+                        run = False
+                    elif alive_items[i][1] == "glacon":
+                        print("gele temps == freezes time")
+                        # freezes new items generation
+                        # for 3 seconds
+                        current_score += 1
                     else :
-                        score_players [player_name] = 1
-                    print(f"score = {score_players}")
+                        current_score += 1                
 
-            if event.type == QUIT:
-                run = False
-                termine = True
+            # when user presses a key that is equal to the letter of the item
+            # or the letter of more than 1 item
+            # corresponding items disappear
+            alive_items = [e for e in alive_items if e[0] != letter_input]
 
-        DISPLAYSURF.blit(upper_img, (MID_WIDTH, 300))
-        DISPLAYSURF.blit(lower_img, (MID_WIDTH, 150 + MID_HEIGTH))
+        if event.type == QUIT:
+            run = False
 
-        pygame.display.update()
+    if fail:
+        current_score = 0
+
+    if current_score > 2:
+        current_score -= 1
+
+    total_score += current_score
+
+    # if the fruit moves out of the screen :
+        # nb_lives -= 1
+        # fruit is removed from alive_items list
+
+    if nb_lives == 0 :
+        run = False
+
+    pygame.display.update()
 
 pygame.quit()
 write_score(score_players)
-#sys.exit()
+print(total_score)
 print(time_zero)
+print(alive_items)
