@@ -118,13 +118,30 @@ background_image_game = pygame.image.load("assets/massacre.jpg")
 background_image_game = pygame.transform.scale(background_image_game, (WIDTH, HEIGHT)) 
 DISPLAYSURF.blit(background_image_game, (0, 0))
 
-# diplay score on the game
-current_score = 200
-score = f"score : {current_score}"
-font_score = pygame.font.Font('fonts/DoubleFeature20.ttf', 30)
-score_surf = font_score.render(score, True, RED)
-score_rect = score_surf.get_rect(topleft = (10, 10))
-DISPLAYSURF.blit(score_surf, score_rect)
+
+# current_score = 200
+def display_score(current_score):
+    score = f"score : {current_score}"
+    font_score = pygame.font.Font('fonts/DoubleFeature20.ttf', 35)
+    score_surf = font_score.render(score, True, RED)
+    score_rect = score_surf.get_rect(topleft = (10, 10))
+    DISPLAYSURF.blit(score_surf, score_rect)
+
+# lives = 3
+
+def display_lives(lives):
+    """ display heart pictures to count down lives """
+    x_heart = 5
+    for i in range(0, lives):
+        heart_surface =pygame.image.load("assets/heart.png").convert_alpha() 
+        heart_surface = pygame.transform.scale(heart_surface, (60, 60))
+        DISPLAYSURF.blit(heart_surface, (x_heart, 60))
+        x_heart += 60
+
+
+
+    
+
 
 
 # timer 
