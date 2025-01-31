@@ -155,12 +155,10 @@ def menu():
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-            if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
 
             if event.type == pygame.MOUSEBUTTONDOWN and button1_rect.collidepoint(mouse_x, mouse_y):
-                game_loop()
                 game_loop()
 
             if event.type == pygame.MOUSEBUTTONDOWN and button2_rect.collidepoint(mouse_x, mouse_y):
@@ -290,5 +288,4 @@ def main():
         pygame.display.update()
 
 if __name__ == "__main__":
-    main()if __name__ == "__main__":
     main()
