@@ -13,7 +13,7 @@ MID_HEIGHT = HEIGHT * 0.5
 RED = (217, 1, 21)   
 TANGERINE = (255, 127, 0)
 FPS = 60
-DROP_SPEED = 10 
+DROP_SPEED = 2
 
 # Set up the display
 DISPLAYSURF = pygame.display.set_mode((WIDTH, HEIGHT))
@@ -125,7 +125,7 @@ def menu():
 # Function to select and position an item randomly
 def create_random_item():
     """Function that creates a target with a random letter and position."""
-    items = ["abricot", "ananas", "chamallow", "citron", "courge", "fraise", "glacon", "grenade", "grenade", "grenade", "kiwi", "melon",
+    items = ["abricot", "ananas", "chamallow", "citron", "courge", "fraise", "glacon", "glacon", "glacon", "grenade", "grenade", "grenade", "kiwi", "melon",
               "noix-coco", "noix-kungfu", "orange", "pamplemousse", "passion", "pasteque", "poire", "pomme-pelee", "pomme"]
     item = random.choice(items)
     letter = random.choice("ABCDEFGHIJKLMNOPQRSTUVWXYZ")
@@ -136,7 +136,7 @@ def create_random_item():
     image_surface = pygame.image.load("assets/" + item + ".png").convert_alpha()
     image_surface = pygame.transform.scale(image_surface, (85, 85))
     font = pygame.font.Font(None, 40) # attention changer la font !!!
-    letter_render = font.render(letter, True, (RED))
+    letter_render = font.render(letter, True, (0, 0, 0))
     image_surface.blit(letter_render, (10, 60))
 
     return item, letter, y, image_surface, image_surface.get_rect(topleft=(x, y))
@@ -175,8 +175,7 @@ def game_loop():
             
                 # combo score
                 if current_score > 2:
-                    current_score -= 1
-                    # show a combo image
+                    current_score -= 1  
 
                 total_score += current_score
                 current_score = 0
@@ -210,7 +209,6 @@ def game_loop():
         for obj in target_list :
             if obj['rect'].y >= HEIGHT:
                 if obj['item'] != "grenade" or obj['item'] != "glacon":
-                # obj['letter'] != grenade_letter:
                     lives -= 1
         
         # game over if no more life
