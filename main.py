@@ -20,25 +20,6 @@ def read_score():
         score = json.load(file)
         return score
 
-def generate_new_fruit():
-
-    # if time is frozen
-    # cannot work for 3 seconds
-
-    # is called in while True loop
-    # every seconds
-
-    # generates randomly a item name
-    # among a array of names
-    # generates randomly a letter
-    # generates randomly a horizontal position
-    # vertical position = top of the screen
-    # return a tuple
-    # (item_name, letter, (x, y))
-
-    # finally new fruit is added to the list
-    # alive_items
-    pass
 
 score_players = read_score()
 print("Entrez votre nom :")
@@ -57,9 +38,11 @@ DISPLAYSURF = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption('Fruit Slicer!')
 
 run = True
+reset_timer = False
 time_zero = time.time()
 minimum = 0
 total_score = 0
+ice_cube = False
 
 # in final game version
 # target_list will be empty
@@ -67,15 +50,12 @@ total_score = 0
 # the newly created fruit is added to our list alive_items
 alive_items = [("A", "fraise"), ("B", "pomme"), ("C", "glacon"), ("A", "glacon"), ("A", "banane"), ("G", "grenade")]
 
+
 while run : # main game loop
     time_now = time.time()
     difference = time_now - time_zero
     current_score = 0
     fail = False
-
-    # every seconds :
-    # we call a function that generates a new fruit
-    generate_new_fruit()
 
     for event in pygame.event.get():
 
@@ -92,8 +72,11 @@ while run : # main game loop
                         run = False
                     elif alive_items[i][1] == "glacon":
                         print("gele temps == freezes time")
+                        ice_cube = True
+                        ice_cube_time = time.time()
                         # freezes new items generation
                         # for 3 seconds
+                        generate_new_fruit(ice_cube, ice_cube_time)
                         current_score += 1
                     else :
                         current_score += 1                
@@ -122,6 +105,16 @@ while run : # main game loop
         run = False
 
     pygame.display.update()
+
+    # every seconds :
+    # we call a function that generates a new fruit
+    if time.time() - time_zero > 1 :
+        if ice_cube is False :
+            generate_new_fruit(ice_cube, None)
+        reset_timer = True
+        if reset_timer :
+            time_zero = time.time()
+            reset_timer = False
 
 pygame.quit()
 write_score(score_players)

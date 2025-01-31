@@ -5,7 +5,8 @@
 # is cooled down by a ice cube
 
 # after 3 seconds :
-# boolean ice_cube = False
+	# boolean ice_cube = False
+    # ice_cube_time is reset at None value
 
 # if ice_cube == True :
     # generating a new fruit is disable
