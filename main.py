@@ -176,14 +176,14 @@ def game_loop():
                 letter_input = pygame.key.name(event.key).upper()
 
                 for i in range(0, len(target_list)):
-                    if letter_input == target_list[i][letter]:
-                        if target_list[i][item] == "grenade":
+                    if letter_input == target_list[i]['letter']:
+                        if target_list[i]['item'] == "grenade":
                             game_over_screen(total_score)
 
                             # fail is for scoring
                             fail = True
                             run = False
-                        elif target_list[i][item] == "glacon":
+                        elif target_list[i]['item'] == "glacon":
                             print("gele temps == freezes time")
                             # freezes new items generation
                             # for 3 seconds
@@ -194,7 +194,7 @@ def game_loop():
                 # when user presses a key that is equal to the letter of the item
                 # or the letter of more than 1 item
                 # corresponding items disappear
-                target_list = [obj for obj in target_list if obj[letter] != letter_input]
+                target_list = [obj for obj in target_list if obj['letter'] != letter_input]
 
 
 
