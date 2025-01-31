@@ -72,7 +72,6 @@ def game_over_screen(total_score):
         pygame.display.update()
 
 
-
 def display_score(total_score):
     score = f"score : {total_score}"
     font_score = pygame.font.Font('fonts/DoubleFeature20.ttf', 35)
@@ -143,30 +142,27 @@ def create_random_item():
     return item, letter, y, image_surface, image_surface.get_rect(topleft=(x, y))
 
 
-def generating_new_item(generate_new_item, target_list, timer, ice_cube):
-#  pygame.time.get_ticks() tells us
-#  when new item generation is cooled down by a ice cube
+def generating_new_item(generate_new_item, target_list, ice_cube):
 
-# after 3 seconds :
-	# boolean ice_cube = False
-    # ice_cube_time is reset at None value
-    if ice_cube :
-        generate_new_item -= 180
-        ice_cube = False
-        
-#        if pygame.time.get_ticks() - timer > 3000:
-#            ice_cube = False
-#            timer = None
-    else :
-        # Variable that controls the frequency of new items being created. (if FPS = 60 then 30 frames = 0.5 seconds)
-        generate_new_item += 2 # increments by 2 on each iteration of the loop
-        if generate_new_item >= 30:  # at 30 a new item is created by calling create_random_item()
-            item, letter, y, surface, rect = create_random_item() # returns the item details (including its position)
-            target_list.append({'item': item, 'letter': letter, 'y': y, 'surface': surface, 'rect': rect}) # new item is added to the target_list
-            generate_new_item = 0 # reset to 0
-            print(target_list)
+    # Variable that controls the frequency of new items being created. (if FPS = 60 then 30 frames = 0.5 seconds)
+    generate_new_item += 2 # increments by 2 on each iteration of the loop
+    if generate_new_item >= 30:  # at 30 a new item is created by calling create_random_item()
+        item, letter, y, surface, rect = create_random_item() # returns the item details (including its position)
+        target_list.append({'item': item, 'letter': letter, 'y': y, 'surface': surface, 'rect': rect}) # new item is added to the target_list
+        generate_new_item = 0 # reset to 0
+
     return (generate_new_item, ice_cube)
 
+def fall(target_list, ice_cube):
+    if ice_cube :
+        now = pygame.time.get_ticks()
+        while (pygame.time.get_ticks() - now) < 3000 :
+            print("freezing")
+
+        ice_cube = False
+    else :
+        for obj in target_list:
+            obj['rect'].y += DROP_SPEED  # we can change this speed in the constants 
 
 def game_loop():
     clock = pygame.time.Clock()
@@ -190,13 +186,14 @@ def game_loop():
 
                 for i in range(0, len(target_list)):
                     if letter_input == target_list[i]['letter']:
-                        print(f"letter input : {letter_input}")
-                        print(f"fruit : {target_list[i]}")
+
                         if target_list[i]['item'] == "grenade":
                             run = False
                         elif target_list[i]['item'] == "glacon":
                             ice_cube = True
-                            print("gele temps == freezes time")
+                            ice_time = pygame.time.get_ticks()
+                            fall(target_list, ice_cube)
+                            ice_cube = True
 
                             current_score += 1
                         else :
@@ -214,7 +211,7 @@ def game_loop():
                 # corresponding items disappear
                 target_list = [obj for obj in target_list if obj['letter'] != letter_input]
 
-        generate_new_item, ice_cube =  generating_new_item(generate_new_item, target_list, ice_cube_time, ice_cube)
+        generate_new_item, ice_cube =  generating_new_item(generate_new_item, target_list, ice_cube)
 #        # Variable that controls the frequency of new items being created. (if FPS = 60 then 30 frames = 0.5 seconds)
 #        generate_new_item += 2 # increments by 2 on each iteration of the loop
 #        if generate_new_item >= 30:  # at 30 a new item is created by calling create_random_item()
@@ -222,9 +219,11 @@ def game_loop():
 #            target_list.append({'item': item, 'letter': letter, 'y': y, 'surface': surface, 'rect': rect}) # new item is added to the target_list
 #            generate_new_item = 0 # reset to 0
 
-        # Update positions of falling items
-        for obj in target_list:
-            obj['rect'].y += DROP_SPEED  # we can change this speed in the constants 
+#        # Update positions of falling items
+#        for obj in target_list:
+#            obj['rect'].y += DROP_SPEED  # we can change this speed in the constants 
+        fall(target_list, ice_cube)
+
 
         # Clear the screen
         background_image = pygame.image.load("assets/massacre.jpg")
