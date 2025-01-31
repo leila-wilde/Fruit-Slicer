@@ -1,11 +1,7 @@
 import pygame
 import random
 import sys
-import pygame
-import random
-import sys
 
-# Initialize Pygame
 # Initialize Pygame
 pygame.init()
 
@@ -27,17 +23,6 @@ background_image_game = pygame.transform.scale(background_image_game, (WIDTH, HE
 DISPLAYSURF.blit(background_image_game, (0, 0))
 
 # Function to draw button
-FPS = 60
-DROP_SPEED = 10 
-
-# Set up the display
-DISPLAYSURF = pygame.display.set_mode((WIDTH, HEIGHT))
-pygame.display.set_caption('Fruit Slicer')
-background_image_game = pygame.image.load("assets/massacre.jpg")
-background_image_game = pygame.transform.scale(background_image_game, (WIDTH, HEIGHT)) 
-DISPLAYSURF.blit(background_image_game, (0, 0))
-
-# Function to draw button
 def draw_button(text, x, y, hover=False):
     """ function to create a button"""
     font = pygame.font.Font('fonts/DoubleFeature20.ttf', 60)
@@ -47,7 +32,6 @@ def draw_button(text, x, y, hover=False):
     DISPLAYSURF.blit(text_surface, text_rect)
     return text_rect
 
-
 def game_over_screen(total_score):
 
     DISPLAYSURF = pygame.display.set_mode((WIDTH, HEIGHT))
@@ -87,51 +71,6 @@ def display_lives(lives):
         heart_surface = pygame.transform.scale(heart_surface, (60, 60))
         DISPLAYSURF.blit(heart_surface, (x_heart, 60))
         x_heart += 60
-
-
-
-# Function to display the Menu screen
-def game_over_screen(total_score):
-
-    DISPLAYSURF = pygame.display.set_mode((WIDTH, HEIGHT))
-    pygame.display.set_caption('Fruit Slicer')
-    background_image_game = pygame.image.load("assets/massacre_tronconneuse.jpg")
-    background_image_game = pygame.transform.scale(background_image_game, (WIDTH, HEIGHT)) 
-    DISPLAYSURF.blit(background_image_game, (0, 0))
-
-    blood_image = pygame.image.load("assets/flaque1.png").convert_alpha()
-    blood_image = pygame.transform.smoothscale(blood_image, (500, 500))
-    DISPLAYSURF.blit(blood_image, (150, 50))
-
-    game_over_text = "GAME OVER"
-    font_game_over_text = pygame.font.Font('fonts/DoubleFeature20.ttf', 100)
-    game_over_text_surf = font_game_over_text.render(game_over_text, True, RED)
-    game_over_text_rect = game_over_text_surf.get_rect(center=(MID_WIDTH, MID_HEIGHT))
-    DISPLAYSURF.blit(game_over_text_surf, game_over_text_rect)
-
-    score_text = f"ton score est : {total_score} !"
-    font_score_text = pygame.font.Font('fonts/DoubleFeature20.ttf', 40)
-    score_text_surf = font_score_text.render(score_text, True, RED)
-    score_text_rect = score_text_surf.get_rect(center = (MID_WIDTH, 450))
-    DISPLAYSURF.blit(score_text_surf, score_text_rect)
-
-def display_score(total_score):
-    score = f"score : {total_score}"
-    font_score = pygame.font.Font('fonts/DoubleFeature20.ttf', 35)
-    score_surf = font_score.render(score, True, RED)
-    score_rect = score_surf.get_rect(topleft = (10, 10))
-    DISPLAYSURF.blit(score_surf, score_rect)
-
-def display_lives(lives):
-    """ display heart pictures to count down lives """
-    x_heart = 5
-    for i in range(0, lives):
-        heart_surface =pygame.image.load("assets/heart.png").convert_alpha() 
-        heart_surface = pygame.transform.scale(heart_surface, (60, 60))
-        DISPLAYSURF.blit(heart_surface, (x_heart, 60))
-        x_heart += 60
-
-
 
 # Function to display the Menu screen
 def menu(): 
@@ -167,12 +106,7 @@ def menu():
 
         pygame.display.update()
 
-
-
-
-
-
-
+# Function to select and position an item randomly
 def create_random_item():
     """Function that creates a target with a random letter and position."""
     items = ["abricot", "ananas", "chamallow", "citron", "courge", "fraise", "glacon", "grenade", "grenade", "grenade", "kiwi", "melon",
@@ -215,7 +149,6 @@ def game_loop():
                         print(f"letter input : {letter_input}")
                         print(f"fruit : {target_list[i]}")
                         if target_list[i]['item'] == "grenade":
-                            game_over_screen(total_score)
 
                             # fail is for scoring
                             fail = True
@@ -226,7 +159,8 @@ def game_loop():
                             # for 3 seconds
                             current_score += 1
                         else :
-                            current_score += 1                
+                            current_score += 1   
+            
 
                 # when user presses a key that is equal to the letter of the item
                 # or the letter of more than 1 item
@@ -262,6 +196,15 @@ def game_loop():
         for obj in target_list:
             DISPLAYSURF.blit(obj['surface'], obj['rect'].topleft)
 
+        # Remove one life for each fruit fellen off the screen
+        for obj in target_list :
+            if obj['rect'].y >= HEIGHT and obj['item'] != "grenade":
+                lives -= 1
+        
+        # game over if no more life
+            if lives == 0 :
+                run = False  
+
         # Remove items that have fallen off the screen
         target_list = [obj for obj in target_list if obj['rect'].y < HEIGHT]
 
@@ -273,7 +216,7 @@ def game_loop():
         pygame.display.flip()
         clock.tick(FPS)
 
-    print(f"score = {total_score}")
+    game_over_screen(total_score)
 
 
 # Main function to run the game
