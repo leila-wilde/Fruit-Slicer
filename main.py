@@ -32,6 +32,49 @@ def draw_button(text, x, y, hover=False):
     DISPLAYSURF.blit(text_surface, text_rect)
     return text_rect
 
+
+def game_over_screen(total_score):
+
+    DISPLAYSURF = pygame.display.set_mode((WIDTH, HEIGHT))
+    pygame.display.set_caption('Fruit Slicer')
+    background_image_game = pygame.image.load("assets/massacre_tronconneuse.jpg")
+    background_image_game = pygame.transform.scale(background_image_game, (WIDTH, HEIGHT)) 
+    DISPLAYSURF.blit(background_image_game, (0, 0))
+
+    blood_image = pygame.image.load("assets/flaque1.png").convert_alpha()
+    blood_image = pygame.transform.smoothscale(blood_image, (500, 500))
+    DISPLAYSURF.blit(blood_image, (150, 50))
+
+    game_over_text = "GAME OVER"
+    font_game_over_text = pygame.font.Font('fonts/DoubleFeature20.ttf', 100)
+    game_over_text_surf = font_game_over_text.render(game_over_text, True, RED)
+    game_over_text_rect = game_over_text_surf.get_rect(center=(MID_WIDTH, MID_HEIGHT))
+    DISPLAYSURF.blit(game_over_text_surf, game_over_text_rect)
+
+    score_text = f"ton score est : {total_score} !"
+    font_score_text = pygame.font.Font('fonts/DoubleFeature20.ttf', 40)
+    score_text_surf = font_score_text.render(score_text, True, RED)
+    score_text_rect = score_text_surf.get_rect(center = (MID_WIDTH, 450))
+    DISPLAYSURF.blit(score_text_surf, score_text_rect)
+
+def display_score(total_score):
+    score = f"score : {total_score}"
+    font_score = pygame.font.Font('fonts/DoubleFeature20.ttf', 35)
+    score_surf = font_score.render(score, True, RED)
+    score_rect = score_surf.get_rect(topleft = (10, 10))
+    DISPLAYSURF.blit(score_surf, score_rect)
+
+def display_lives(lives):
+    """ display heart pictures to count down lives """
+    x_heart = 5
+    for i in range(0, lives):
+        heart_surface =pygame.image.load("assets/heart.png").convert_alpha() 
+        heart_surface = pygame.transform.scale(heart_surface, (60, 60))
+        DISPLAYSURF.blit(heart_surface, (x_heart, 60))
+        x_heart += 60
+
+
+
 # Function to display the Menu screen
 def menu(): 
     # background design
@@ -65,32 +108,15 @@ def menu():
 
         pygame.display.update()
 
-# current_score = 200
-def display_score(current_score):
-    score = f"score : {current_score}"
-    font_score = pygame.font.Font('fonts/DoubleFeature20.ttf', 35)
-    score_surf = font_score.render(score, True, RED)
-    score_rect = score_surf.get_rect(topleft = (10, 10))
-    DISPLAYSURF.blit(score_surf, score_rect)
 
-# lives = 3
 
-def display_lives(lives):
-    """ display heart pictures to count down lives """
-    x_heart = 5
-    for i in range(0, lives):
-        heart_surface =pygame.image.load("assets/heart.png").convert_alpha() 
-        heart_surface = pygame.transform.scale(heart_surface, (60, 60))
-        DISPLAYSURF.blit(heart_surface, (x_heart, 60))
-        x_heart += 60
 
-def game_over():
-    # display message victory/defeat
-    pass
+
+
 
 def create_random_item():
     """Function that creates a target with a random letter and position."""
-    items = ["abricot", "ananas", "chamallow", "citron", "courge", "fraise", "glaçon", "grenade", "grenade", "grenade", "kiwi", "melon",
+    items = ["abricot", "ananas", "chamallow", "citron", "courge", "fraise", "glacon", "grenade", "grenade", "grenade", "kiwi", "melon",
               "noix-coco", "noix-kungfu", "orange", "pamplemousse", "passion", "pasteque", "poire", "pomme-pelee", "pomme"]
     item = random.choice(items)
     letter = random.choice("ABCDEFGHIJKLMNOPQRSTUVWXYZ")
@@ -110,8 +136,13 @@ def game_loop():
     clock = pygame.time.Clock()
     target_list = []
     generate_new_item = 0
+    lives = 3
+    total_score =0
+    fail = False
+    current_score = 0
 
-    while True:
+    run = True
+    while run:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
@@ -140,44 +171,50 @@ def game_loop():
         # Remove items that have fallen off the screen
         target_list = [obj for obj in target_list if obj['rect'].y < HEIGHT]
 
+        for event in pygame.event.get(): 
+            if event.type == pygame.KEYDOWN:
+                letter_input = pygame.key.name(event.key).upper()
+
+                for i in range(0, len(target_list)):
+                    if letter_input == target_list[i][letter]:
+                        if target_list[i][item] == "grenade":
+                            game_over_screen(total_score)
+
+                            # fail is for scoring
+                            fail = True
+                            run = False
+                        elif target_list[i][item] == "glacon":
+                            print("gele temps == freezes time")
+                            # freezes new items generation
+                            # for 3 seconds
+                            current_score += 1
+                        else :
+                            current_score += 1                
+
+                # when user presses a key that is equal to the letter of the item
+                # or the letter of more than 1 item
+                # corresponding items disappear
+                target_list = [obj for obj in target_list if obj[letter] != letter_input]
+
+
+
+            if fail:
+                current_score = 0
+
+            if current_score > 2:
+                current_score -= 1
+
+            total_score += current_score
+
+
+        display_score(total_score)
+        display_lives(lives)
+
         # Update the display
         pygame.display.flip()
         clock.tick(FPS)
 
-# def show_random_object():
-    # créé un ojet fruit avec une image, une lettre, une taille (variable : image, letter, size(width, height))
-    # cet objet à une coordonée de départ RANDOM, une direction RANDOM et une vitesse (variable : x, y, speed)
-#     # select object - fruit, ice cube or bomb
-#     # select random x,y vector? speed
 
-# def ice_cube():
-    # si la saisie clavier relative au glacon == gèle les mouvements pendant X temps 
-    # 
-
-# def game_score():
-    # si un fruit est validé 
-    # le score augmente 
-    # le fruit se transforme en flaque de sang 
-    
-# def manage_score():
-    # ajoute le score de la pratie fini à l'ancien score 
-    # varaible : game_score, hystory_score
-    # return le nouveau score
-
-#def input_new_player()
-    # lie un nom à un score dans un historique 
-    # ajoute un fichier txt ou json
-    
-# def player_lives():
-    # retire une vie à chaque fruit manqué
-    # le joueur débute avec 3 vies
-    # lives = 3
-    # si fruit manqué -> déduit une vie
-    # return le nombre de vie courant
-    
-# def game_over():
-    # deux condition de défaite : la bombe (saisie de clavier)
-#     # display message victory/defeat
 
 
 # Main function to run the game
