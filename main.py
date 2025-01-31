@@ -198,8 +198,9 @@ def game_loop():
 
         # Remove one life for each fruit fellen off the screen
         for obj in target_list :
-            if obj['rect'].y >= HEIGHT and obj['item'] != "grenade":
-                lives -= 1
+            if obj['rect'].y >= HEIGHT:
+                if obj['item'] != "grenade" or obj['item'] != "glacon":
+                    lives -= 1
         
         # game over if no more life
             if lives == 0 :
