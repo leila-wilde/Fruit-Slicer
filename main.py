@@ -53,12 +53,12 @@ def game_over_screen(total_score):
     score_text = f"ton score est : {total_score} !"
     font_score_text = pygame.font.Font('fonts/DoubleFeature20.ttf', 40)
     score_text_surf = font_score_text.render(score_text, True, RED)
-    score_text_rect = score_text_surf.get_rect(center = (MID_WIDTH, MID_HEIGHT + 20))
+    score_text_rect = score_text_surf.get_rect(center = (MID_WIDTH, MID_HEIGHT + 40))
     DISPLAYSURF.blit(score_text_surf, score_text_rect)
 
     while True: 
         mouse_x, mouse_y = pygame.mouse.get_pos()
-        button_rect = draw_button("MENU", MID_WIDTH, 550, button_rect.collidepoint(mouse_x, mouse_y) if 'button1_rect' in locals()else False)
+        button_rect = draw_button("MENU", MID_WIDTH, 550, button_rect.collidepoint(mouse_x, mouse_y) if 'button_rect' in locals()else False)
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
