@@ -90,7 +90,7 @@ def game_over():
 
 def create_random_item():
     """Function that creates a target with a random letter and position."""
-    items = ["abricot", "ananas", "chamallow", "citron", "courge", "fraise", "glaçon", "grenade", "grenade", "grenade", "kiwi", "melon",
+    items = ["abricot", "ananas", "chamallow", "citron", "courge", "fraise", "glacon", "grenade", "grenade", "grenade", "kiwi", "melon",
               "noix-coco", "noix-kungfu", "orange", "pamplemousse", "passion", "pasteque", "poire", "pomme-pelee", "pomme"]
     item = random.choice(items)
     letter = random.choice("ABCDEFGHIJKLMNOPQRSTUVWXYZ")
