@@ -152,12 +152,12 @@ def game_loop():
         generate_new_item += 2 # increments by 2 on each iteration of the loop
         if generate_new_item >= 30:  # at 30 a new item is created by calling create_random_item()
             item, letter, y, surface, rect = create_random_item() # returns the item details (including its position)
-            target_list.append((item, letter, y, surface, rect)) # new item is added to the target_list
+            target_list.append({'item': item, 'letter': letter, 'y': y, 'surface': surface, 'rect': rect}) # new item is added to the target_list
             generate_new_item = 0 # reset to 0
 
         # Update positions of falling items
         for obj in target_list:
-            obj[4].y += DROP_SPEED  # we can change this speed in the constants 
+            obj['rect'].y += DROP_SPEED  # we can change this speed in the constants 
 
         # Clear the screen
         background_image = pygame.image.load("assets/massacre_tronconneuse.jpg")
@@ -166,10 +166,10 @@ def game_loop():
 
         # Draw all falling items
         for obj in target_list:
-            DISPLAYSURF.blit(obj[3], obj[4].topleft)
+            DISPLAYSURF.blit(obj['surface'], obj['rect'].topleft)
 
         # Remove items that have fallen off the screen
-        target_list = [obj for obj in target_list if obj[4].y < HEIGHT]
+        target_list = [obj for obj in target_list if obj['rect'].y < HEIGHT]
 
         for event in pygame.event.get(): 
             if event.type == pygame.KEYDOWN:
