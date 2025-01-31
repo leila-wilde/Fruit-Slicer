@@ -1,7 +1,11 @@
 import pygame
 import random
 import sys
+import pygame
+import random
+import sys
 
+# Initialize Pygame
 # Initialize Pygame
 pygame.init()
 
@@ -12,6 +16,17 @@ MID_WIDTH = WIDTH * 0.5
 MID_HEIGHT = HEIGHT * 0.5
 RED = (217, 1, 21)   
 TANGERINE = (255, 127, 0)
+FPS = 60
+DROP_SPEED = 10 
+
+# Set up the display
+DISPLAYSURF = pygame.display.set_mode((WIDTH, HEIGHT))
+pygame.display.set_caption('Fruit Slicer')
+background_image_game = pygame.image.load("assets/massacre.jpg")
+background_image_game = pygame.transform.scale(background_image_game, (WIDTH, HEIGHT)) 
+DISPLAYSURF.blit(background_image_game, (0, 0))
+
+# Function to draw button
 FPS = 60
 DROP_SPEED = 10 
 
@@ -76,12 +91,56 @@ def display_lives(lives):
 
 
 # Function to display the Menu screen
+def game_over_screen(total_score):
+
+    DISPLAYSURF = pygame.display.set_mode((WIDTH, HEIGHT))
+    pygame.display.set_caption('Fruit Slicer')
+    background_image_game = pygame.image.load("assets/massacre_tronconneuse.jpg")
+    background_image_game = pygame.transform.scale(background_image_game, (WIDTH, HEIGHT)) 
+    DISPLAYSURF.blit(background_image_game, (0, 0))
+
+    blood_image = pygame.image.load("assets/flaque1.png").convert_alpha()
+    blood_image = pygame.transform.smoothscale(blood_image, (500, 500))
+    DISPLAYSURF.blit(blood_image, (150, 50))
+
+    game_over_text = "GAME OVER"
+    font_game_over_text = pygame.font.Font('fonts/DoubleFeature20.ttf', 100)
+    game_over_text_surf = font_game_over_text.render(game_over_text, True, RED)
+    game_over_text_rect = game_over_text_surf.get_rect(center=(MID_WIDTH, MID_HEIGHT))
+    DISPLAYSURF.blit(game_over_text_surf, game_over_text_rect)
+
+    score_text = f"ton score est : {total_score} !"
+    font_score_text = pygame.font.Font('fonts/DoubleFeature20.ttf', 40)
+    score_text_surf = font_score_text.render(score_text, True, RED)
+    score_text_rect = score_text_surf.get_rect(center = (MID_WIDTH, 450))
+    DISPLAYSURF.blit(score_text_surf, score_text_rect)
+
+def display_score(total_score):
+    score = f"score : {total_score}"
+    font_score = pygame.font.Font('fonts/DoubleFeature20.ttf', 35)
+    score_surf = font_score.render(score, True, RED)
+    score_rect = score_surf.get_rect(topleft = (10, 10))
+    DISPLAYSURF.blit(score_surf, score_rect)
+
+def display_lives(lives):
+    """ display heart pictures to count down lives """
+    x_heart = 5
+    for i in range(0, lives):
+        heart_surface =pygame.image.load("assets/heart.png").convert_alpha() 
+        heart_surface = pygame.transform.scale(heart_surface, (60, 60))
+        DISPLAYSURF.blit(heart_surface, (x_heart, 60))
+        x_heart += 60
+
+
+
+# Function to display the Menu screen
 def menu(): 
     # background design
     background_image = pygame.image.load("assets/massacre_tronconneuse.jpg")
     background_image = pygame.transform.scale(background_image, (WIDTH, HEIGHT))
     DISPLAYSURF.blit(background_image, (0, 0)) 
 
+    # Display title
     # Display title
     text = "FRUIT SLICER"
     font_text = pygame.font.Font('fonts/DoubleFeature20.ttf', 100)
@@ -96,10 +155,12 @@ def menu():
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
+            if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
 
             if event.type == pygame.MOUSEBUTTONDOWN and button1_rect.collidepoint(mouse_x, mouse_y):
+                game_loop()
                 game_loop()
 
             if event.type == pygame.MOUSEBUTTONDOWN and button2_rect.collidepoint(mouse_x, mouse_y):
@@ -229,4 +290,5 @@ def main():
         pygame.display.update()
 
 if __name__ == "__main__":
+    main()if __name__ == "__main__":
     main()
