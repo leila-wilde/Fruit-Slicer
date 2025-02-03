@@ -138,6 +138,11 @@ def create_random_item():
     return item, letter, y, image_surface, image_surface.get_rect(topleft=(x, y))
 
 def game_loop():
+    # Set up music
+    pygame.mixer.music.load('assets/game_music.mp3')
+    pygame.mixer.music.set_volume(0.5)
+    pygame.mixer.music.play(-1)
+    
     clock = pygame.time.Clock()
     target_list = []
     generate_new_item = 0
@@ -220,6 +225,9 @@ def game_loop():
         # Update the display
         pygame.display.flip()
         clock.tick(FPS)
+    
+    # Stop the music at end of game
+    pygame.mixer.music.stop()
 
     return total_score
 
