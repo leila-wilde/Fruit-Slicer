@@ -12,6 +12,8 @@ MID_WIDTH = WIDTH * 0.5
 MID_HEIGHT = HEIGHT * 0.5
 RED = (217, 1, 21)   
 TANGERINE = (255, 127, 0)
+BLACK = (0, 0, 0)
+WHITE = (255, 255, 255)
 BLOOD_FONT = 'fonts/DoubleFeature20.ttf'
 BLOCK_FONT = 'fonts/Block_Helvetica.ttf'
 SLASH_FONT = 'fonts/Parasite.ttf'
@@ -129,9 +131,9 @@ def create_random_item():
     # Surface for the image:
     image_surface = pygame.image.load('assets/' + item + '.png').convert_alpha()
     image_surface = pygame.transform.scale(image_surface, (85, 85))
-    font = pygame.font.Font(None, 40) # attention changer la font !!!
-    letter_render = font.render(letter, True, (TANGERINE))
-    image_surface.blit(letter_render, (10, 60))
+    font = pygame.font.Font(BLOCK_FONT, 40) # attention changer la font !!!
+    letter_render = font.render(letter, True, (BLACK))
+    image_surface.blit(letter_render, (0, 10))
 
     return item, letter, y, image_surface, image_surface.get_rect(topleft=(x, y))
 
@@ -202,7 +204,7 @@ def game_loop():
         # Remove one life for each fruit fellen off the screen
         for obj in target_list :
             if obj['rect'].y >= HEIGHT:
-                if obj['item'] != 'grenade' or obj['item'] != 'glacon':
+                if obj['item'] != 'grenade' and obj['item'] != 'glacon':
                     lives -= 1
         
         # game over if no more life
