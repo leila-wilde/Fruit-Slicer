@@ -162,9 +162,9 @@ def game_loop():
                         if target_list[i]['item'] == 'grenade':
                             run = False
                         elif target_list[i]['item'] == 'glacon':
-                            print('gele temps == freezes time')
-                            # freezes new items generation
-                            # for 3 seconds
+                            now = pygame.time.get_ticks()
+                            while (pygame.time.get_ticks() - now) < 3000 :
+                                continue
                             current_score += 1
                         else :
                             current_score += 1
